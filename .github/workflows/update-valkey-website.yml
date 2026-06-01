@@ -30,6 +30,7 @@ jobs:
 
       - name: Generate token
         id: generate-token
+        if: github.repository_owner == 'valkey-io'
         uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
         with:
           app-id: ${{ secrets.VALKEYRIE_BOT_APP_ID }}
@@ -53,7 +54,7 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/valkey-io.github.io
           path: valkey-io.github.io
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.PAT_TOKEN  }}
 
       - name: Format version for filename
         id: format-version
