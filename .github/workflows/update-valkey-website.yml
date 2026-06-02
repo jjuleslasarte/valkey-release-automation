@@ -127,7 +127,7 @@ jobs:
         if: steps.update-website.outputs.has_changes == 'true' || steps.update-try-valkey.outputs.has_try_valkey_changes == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.PAT_TOKEN  }}
           path: valkey-io.github.io
           branch: update-website-${{ inputs.version }}
           commit-message: "updated website for version ${{ inputs.version }}"
