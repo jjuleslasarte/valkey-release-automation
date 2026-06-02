@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           repository: ${{ github.repository_owner }}/valkey-hashes
-          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.secrets.PAT_TOKEN }}
 
       - name: Ensure repository is initialized
         run: |
