@@ -53,14 +53,14 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/valkey-container
           path: valkey-container
-          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.PAT_TOKEN }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
 
       - name: Checkout valkey-release-automation
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository_owner }}/valkey-release-automation
           path: valkey-release-automation
-          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.PAT_TOKEN }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -143,7 +143,7 @@ jobs:
         id: create-pr
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.PAT_TOKEN }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
           path: valkey-container
           branch: update-${{ inputs.version }}
           commit-message: "Preparing changes for version ${{ inputs.version }}"

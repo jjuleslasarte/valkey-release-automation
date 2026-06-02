@@ -54,7 +54,7 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/valkey-io.github.io
           path: valkey-io.github.io
-          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.PAT_TOKEN  }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
 
       - name: Format version for filename
         id: format-version
@@ -127,7 +127,7 @@ jobs:
         if: steps.update-website.outputs.has_changes == 'true' || steps.update-try-valkey.outputs.has_try_valkey_changes == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.PAT_TOKEN  }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
           path: valkey-io.github.io
           branch: update-website-${{ inputs.version }}
           commit-message: "updated website for version ${{ inputs.version }}"
