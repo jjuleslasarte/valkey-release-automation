@@ -191,7 +191,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate token
-        if: needs.process-inputs.outputs.trigger_bundle == 'true'
+        if: needs.process-inputs.outputs.trigger_bundle == 'true' && github.repository_owner == 'valkey-io'
         id: generate-token
         uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
         with:
@@ -204,7 +204,7 @@ jobs:
         if: needs.process-inputs.outputs.trigger_bundle == 'true'
         uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # Version 3
         with:
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
           repository: ${{ github.repository_owner }}/valkey-bundle
           event-type: valkey-release
           client-payload: >

@@ -27,6 +27,7 @@ jobs:
 
       - name: Generate token
         id: generate-token
+        if: github.repository_owner == 'valkey-io'
         uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
         with:
           app-id: ${{ secrets.VALKEYRIE_BOT_APP_ID }}
@@ -52,14 +53,14 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/valkey-container
           path: valkey-container
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
 
       - name: Checkout valkey-release-automation
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository_owner }}/valkey-release-automation
           path: valkey-release-automation
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -142,7 +143,7 @@ jobs:
         id: create-pr
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ github.repository_owner == 'valkey-io' && steps.generate-token.outputs.token || secrets.AUTOMATION_PAT }}
           path: valkey-container
           branch: update-${{ inputs.version }}
           commit-message: "Preparing changes for version ${{ inputs.version }}"
